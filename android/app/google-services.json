@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "964748353666",
+    "project_id": "toolventorymate",
+    "storage_bucket": "toolventorymate.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:964748353666:android:a20d5a1dcd77ce651a149b",
+        "android_client_info": {
+          "package_name": "com.example.toolventory_mate"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUouGMTmdDMAN7XSmAjxRDAZalSlsSyWI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
