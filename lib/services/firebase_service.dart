@@ -1,28 +1,43 @@
 //lib/services/firebase_service.dart
-import 'package:firebase_database/firebase_database.dart';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/product.dart';
 
 class FirebaseService {
-  final DatabaseReference _dbRef = FirebaseDatabase.instance.ref();
+  final CollectionReference _productCollection =
+      FirebaseFirestore.instance.collection('productos');
 
   Future<void> addProduct(Producto producto) async {
-    await _dbRef.child('productos').push().set({
+    await _productCollection.add({
       'nombre': producto.nombre,
       'imagenUrl': producto.imagenUrl,
       'stock': producto.stock,
+      'descripcion': producto.descripcion,
     });
   }
 
   Future<List<Producto>> getProducts() async {
-    DataSnapshot snapshot = await _dbRef.child('productos').get();
-    List<Producto> products = [];
-    for (var product in snapshot.children) {
-      products.add(Producto(
-        nombre: product.child('nombre').value.toString(),
-        imagenUrl: product.child('imagenUrl').value.toString(),
-        stock: int.parse(product.child('stock').value.toString()),
-      ));
-    }
-    return products;
+    QuerySnapshot snapshot = await _productCollection.get();
+    return snapshot.docs.map((doc) {
+      return Producto(
+        nombre: doc['nombre'],
+        imagenUrl: doc['imagenUrl'],
+        stock: doc['stock'],
+        descripcion: doc['descripcion'],
+      );
+    }).toList();
+  }
+
+  Stream<List<Producto>> productStream() {
+    return _productCollection.snapshots().map((snapshot) {
+      return snapshot.docs.map((doc) {
+        return Producto(
+          nombre: doc['nombre'],
+          imagenUrl: doc['imagenUrl'],
+          stock: doc['stock'],
+          descripcion: doc['descripcion'],
+        );
+      }).toList();
+    });
   }
 }

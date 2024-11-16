@@ -13,4 +13,8 @@ class ProductController {
   Future<void> addProduct(Producto producto) async {
     await _firebaseService.addProduct(producto);
   }
+
+  Stream<List<Producto>> productStream() {
+    return _firebaseService.productStream();
+  }
 }

@@ -1,7 +1,10 @@
+//lib/views/catalog_page.dart
+
 import 'package:flutter/material.dart';
 import '../components/product_card.dart';
 import '../controllers/product_controller.dart';
 import '../models/product.dart';
+import 'add_product_page.dart'; // Importa la nueva página
 
 class CatalogoPage extends StatefulWidget {
   @override
@@ -10,18 +13,6 @@ class CatalogoPage extends StatefulWidget {
 
 class _CatalogoPageState extends State<CatalogoPage> {
   final ProductController _controller = ProductController();
-  List<Producto> _productos = [];
-
-  @override
-  void initState() {
-    super.initState();
-    _fetchProducts();
-  }
-
-  Future<void> _fetchProducts() async {
-    _productos = await _controller.fetchProducts();
-    setState(() {});
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,21 +20,33 @@ class _CatalogoPageState extends State<CatalogoPage> {
       appBar: AppBar(
         title: Text('Inventario de Productos'),
       ),
-      body: GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 3 / 2,
-          crossAxisSpacing: 10,
-          mainAxisSpacing: 10,
-        ),
-        itemCount: _productos.length,
-        itemBuilder: (context, index) {
-          return ProductCard(producto: _productos[index]);
+      body: StreamBuilder<List<Producto>>(
+        stream: _controller.productStream(),
+        builder: (context, snapshot) {
+          if (!snapshot.hasData) {
+            return Center(child: CircularProgressIndicator());
+          }
+          List<Producto> productos = snapshot.data!;
+          return GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 3 / 2,
+              crossAxisSpacing: 10,
+              mainAxisSpacing: 10,
+            ),
+            itemCount: productos.length,
+            itemBuilder: (context, index) {
+              return ProductCard(producto: productos[index]);
+            },
+          );
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Acción para añadir nuevos productos
+        onPressed: () async {
+          await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddProductPage()),
+          );
         },
         child: Icon(Icons.add),
       ),
