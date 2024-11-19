@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class CatalogoPage extends StatelessWidget {
   @override
@@ -42,43 +43,49 @@ class CatalogoPage extends StatelessWidget {
                       child: Container(
                         padding: EdgeInsets.all(
                             8.0), // Espaciado interno en el contenedor
-                        child: SingleChildScrollView(
-                          // Permite desplazamiento si el contenido es demasiado grande
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment
-                                .start, // Alineación del contenido de la columna al inicio
-                            children: [
-                              Text(
-                                producto['nombre'],
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight
-                                        .bold), // Estilo del texto del nombre del producto
-                              ),
-                              SizedBox(
-                                  height:
-                                      4.0), // Espacio entre el nombre y el stock
-                              Text(
-                                'Stock: ${producto['stock']}',
-                                style: TextStyle(
-                                    fontSize: 14,
-                                    color: Colors
-                                        .grey), // Estilo del texto del stock
-                              ),
-                              SizedBox(
-                                  height:
-                                      4.0), // Espacio entre el stock y la descripción
-                              Text(
-                                producto['descripcion'] ??
-                                    '', // Descripción del producto (si existe)
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    color: Colors.grey[
-                                        600]), // Estilo del texto de la descripción
-                              ),
-                            ],
+                        child: SvgPicture.network(
+                          producto['imagenURL'],
+                          placeholderBuilder: (BuildContext context) =>
+                              Container(
+                            padding: const EdgeInsets.all(30.0),
+                            child: const CircularProgressIndicator(),
                           ),
+                          height: 100,
                         ),
+                      ),
+                    ),
+                    Padding(
+                      padding:
+                          EdgeInsets.all(8.0), // Espaciado interno del texto
+                      child: Text(
+                        producto['nombre'],
+                        style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight
+                                .bold), // Estilo del texto del nombre del producto
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 8.0), // Espaciado horizontal del texto
+                      child: Text(
+                        'Stock: ${producto['stock']}',
+                        style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey), // Estilo del texto del stock
+                      ),
+                    ),
+                    Padding(
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 8.0,
+                          vertical: 4.0), // Espaciado interno del texto
+                      child: Text(
+                        producto['descripcion'] ??
+                            '', // Descripción del producto (si existe)
+                        style: TextStyle(
+                            fontSize: 12,
+                            color: Colors.grey[
+                                600]), // Estilo del texto de la descripción
                       ),
                     ),
                   ],
