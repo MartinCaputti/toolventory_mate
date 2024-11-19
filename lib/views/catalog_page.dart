@@ -1,6 +1,46 @@
 //lib/views/catalog_page.dart
 
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class CatalogoPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Inventario de Productos'),
+      ),
+      body: StreamBuilder(
+        stream: FirebaseFirestore.instance.collection('productos').snapshots(),
+        builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          if (!snapshot.hasData) {
+            return Center(child: CircularProgressIndicator());
+          }
+          var productos = snapshot.data!.docs;
+          return ListView.builder(
+            itemCount: productos.length,
+            itemBuilder: (context, index) {
+              var producto = productos[index];
+              return ListTile(
+                title: Text(producto['nombre']),
+                subtitle: Text('Stock: ${producto['stock']}'),
+              );
+            },
+          );
+        },
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          // Acción para añadir nuevos productos
+        },
+        child: Icon(Icons.add),
+      ),
+    );
+  }
+}
+
+/*
+import 'package:flutter/material.dart';
 import '../components/product_card.dart';
 import '../controllers/product_controller.dart';
 import '../models/product.dart';
@@ -53,3 +93,4 @@ class _CatalogoPageState extends State<CatalogoPage> {
     );
   }
 }
+*/

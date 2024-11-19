@@ -1,5 +1,4 @@
 //components/product_card.dart
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../models/product.dart';
@@ -21,6 +20,7 @@ class ProductCard extends StatelessWidget {
               placeholderBuilder: (BuildContext context) => Container(
                   padding: const EdgeInsets.all(30.0),
                   child: const CircularProgressIndicator()),
+              height: 100,
             ),
           ),
           Padding(
