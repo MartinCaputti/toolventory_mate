@@ -1,4 +1,5 @@
-//Controllers/product_controller.dart
+//lib/controllers/product_controller.dart
+
 import '../models/product.dart';
 import '../services/firebase_service.dart';
 
@@ -20,5 +21,9 @@ class ProductController {
   Future<void> deleteProduct(String id) async {
     // Controlador que llama a deleteProduct en FirebaseService para eliminar un producto.
     await _firebaseService.deleteProduct(id);
+  }
+
+  Future<void> updateProduct(String id, Producto producto) async {
+    await _firebaseService.updateProduct(id, producto);
   }
 }

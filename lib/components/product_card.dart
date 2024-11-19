@@ -1,4 +1,5 @@
-//components/product_card.dart
+//lib/components/product_card.dart
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../models/product.dart';
@@ -41,7 +42,8 @@ class ProductCard extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
             child: Text(
-              producto.descripcion,
+              producto.descripcion ??
+                  '', // Proporciona un valor predeterminado en caso de que descripcion sea null
               style: TextStyle(fontSize: 12, color: Colors.grey[600]),
             ),
           ),

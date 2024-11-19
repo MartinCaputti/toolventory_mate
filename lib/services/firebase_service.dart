@@ -8,7 +8,23 @@ class FirebaseService {
       FirebaseFirestore.instance.collection('productos');
 
   Future<void> addProduct(Producto producto) async {
-    await _productCollection.add({
+    DocumentReference docRef = await _productCollection.add({
+      'nombre': producto.nombre,
+      'imagenURL': producto.imagenURL,
+      'stock': producto.stock,
+      'descripcion': producto.descripcion,
+    });
+    await _productCollection.doc(docRef.id).update({
+      'id': docRef.id
+    }); //Actualiza el documento con el id generado ,sin esto el uptade explota
+  }
+
+  Future<void> deleteProduct(String id) async {
+    await _productCollection.doc(id).delete();
+  }
+
+  Future<void> updateProduct(String id, Producto producto) async {
+    await _productCollection.doc(id).update({
       'nombre': producto.nombre,
       'imagenURL': producto.imagenURL,
       'stock': producto.stock,
@@ -20,6 +36,7 @@ class FirebaseService {
     QuerySnapshot snapshot = await _productCollection.get();
     return snapshot.docs.map((doc) {
       return Producto(
+        id: doc.id,
         nombre: doc['nombre'],
         imagenURL: doc['imagenURL'],
         stock: doc['stock'],
@@ -32,6 +49,7 @@ class FirebaseService {
     return _productCollection.snapshots().map((snapshot) {
       return snapshot.docs.map((doc) {
         return Producto(
+          id: doc.id,
           nombre: doc['nombre'],
           imagenURL: doc['imagenURL'],
           stock: doc['stock'],
@@ -39,10 +57,5 @@ class FirebaseService {
         );
       }).toList();
     });
-  }
-
-  Future<void> deleteProduct(String id) async {
-    // Funcion para borrar por ID en caso de que haya una entrada erronea o de prueba
-    await _productCollection.doc(id).delete();
   }
 }
