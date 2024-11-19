@@ -16,13 +16,18 @@ class ProductCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            child: SvgPicture.network(
-              producto.imagenURL,
-              placeholderBuilder: (BuildContext context) => Container(
-                padding: const EdgeInsets.all(30.0),
-                child: const CircularProgressIndicator(),
+            child: Container(
+              padding: EdgeInsets.all(8.0),
+              child: Center(
+                child: SvgPicture.network(
+                  producto.imagenURL,
+                  placeholderBuilder: (BuildContext context) => Container(
+                    padding: const EdgeInsets.all(30.0),
+                    child: const CircularProgressIndicator(),
+                  ),
+                  height: 100,
+                ),
               ),
-              height: 100,
             ),
           ),
           Padding(
@@ -42,8 +47,7 @@ class ProductCard extends StatelessWidget {
           Padding(
             padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
             child: Text(
-              producto.descripcion ??
-                  '', // Proporciona un valor predeterminado en caso de que descripcion sea null
+              producto.descripcion ?? '',
               style: TextStyle(fontSize: 12, color: Colors.grey[600]),
             ),
           ),

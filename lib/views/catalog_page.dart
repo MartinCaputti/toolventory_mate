@@ -6,6 +6,7 @@ import '../controllers/product_controller.dart';
 import 'add_product_page.dart';
 import 'edit_product_page.dart';
 import '../models/product.dart';
+import '../components/product_card.dart';
 
 class CatalogoPage extends StatelessWidget {
   final ProductController _controller = ProductController();
@@ -104,53 +105,9 @@ class CatalogoPage extends StatelessWidget {
                       SnackBar(content: Text('${producto.nombre} eliminado')),
                     );
                   },
-                  child: Card(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(
-                          child: Container(
-                            padding: EdgeInsets.all(8.0),
-                            child: Center(
-                              child: SvgPicture.network(
-                                producto.imagenURL,
-                                placeholderBuilder: (BuildContext context) =>
-                                    Container(
-                                  padding: const EdgeInsets.all(30.0),
-                                  child: const CircularProgressIndicator(),
-                                ),
-                                height: 100,
-                              ),
-                            ),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.all(8.0),
-                          child: Text(
-                            producto.nombre,
-                            style: TextStyle(
-                                fontSize: 16, fontWeight: FontWeight.bold),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 8.0),
-                          child: Text(
-                            'Stock: ${producto.stock}',
-                            style: TextStyle(fontSize: 14, color: Colors.grey),
-                          ),
-                        ),
-                        Padding(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 8.0, vertical: 4.0),
-                          child: Text(
-                            producto.descripcion ?? '',
-                            style: TextStyle(
-                                fontSize: 12, color: Colors.grey[600]),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
+                  child: ProductCard(
+                      producto:
+                          producto), // Utilizo el mi widget ProductCard para modularizar
                 ),
               );
             },
