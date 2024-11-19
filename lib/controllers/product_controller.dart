@@ -16,4 +16,9 @@ class ProductController {
   Stream<List<Producto>> productStream() {
     return _firebaseService.productStream();
   }
+
+  Future<void> deleteProduct(String id) async {
+    // Controlador que llama a deleteProduct en FirebaseService para eliminar un producto.
+    await _firebaseService.deleteProduct(id);
+  }
 }

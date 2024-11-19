@@ -46,6 +46,7 @@ class _AddProductPageState extends State<AddProductPage> {
                 controller: _nombreController,
                 decoration: InputDecoration(labelText: 'Nombre'),
                 validator: (value) {
+                  // Validación del campo
                   if (value == null || value.isEmpty) {
                     return 'Por favor ingrese el nombre';
                   }
@@ -53,6 +54,7 @@ class _AddProductPageState extends State<AddProductPage> {
                 },
               ),
               TextFormField(
+                //Sigo trabajando con URLs para Imagenes
                 controller: _imagenUrlController,
                 decoration: InputDecoration(labelText: 'URL de la Imagen'),
                 validator: (value) {
@@ -65,7 +67,8 @@ class _AddProductPageState extends State<AddProductPage> {
               TextFormField(
                 controller: _stockController,
                 decoration: InputDecoration(labelText: 'Stock'),
-                keyboardType: TextInputType.number,
+                keyboardType: TextInputType
+                    .number, //// Tipo de teclado para ingresar números
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Por favor ingrese la cantidad de stock';

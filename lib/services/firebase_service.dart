@@ -40,4 +40,9 @@ class FirebaseService {
       }).toList();
     });
   }
+
+  Future<void> deleteProduct(String id) async {
+    // Funcion para borrar por ID en caso de que haya una entrada erronea o de prueba
+    await _productCollection.doc(id).delete();
+  }
 }
