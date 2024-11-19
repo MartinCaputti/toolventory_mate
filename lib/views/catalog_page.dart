@@ -3,6 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'add_product_page.dart';
 
 class CatalogoPage extends StatelessWidget {
   @override
@@ -12,12 +13,13 @@ class CatalogoPage extends StatelessWidget {
         title: Text('Inventario de Productos'), // Título en  AppBar
       ),
       body: StreamBuilder(
+        //Escucha los cambios en tiempo real en la colección productos de Firestore
         stream: FirebaseFirestore.instance
             .collection('productos')
-            .snapshots(), // Escucha cambios en la colección 'productos'
+            .snapshots(), //  cambios en la colección 'productos'
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
-            // Si no tengo nada en la base o mientras se espero los datos de Firestore
+            // Si no tengo nada en la base o mientras se esperan los datos de Firestore
             return Center(
                 child:
                     CircularProgressIndicator()); // Muestra un indicador de carga
@@ -43,14 +45,17 @@ class CatalogoPage extends StatelessWidget {
                       child: Container(
                         padding: EdgeInsets.all(
                             8.0), // Espaciado interno en el contenedor
-                        child: SvgPicture.network(
-                          producto['imagenURL'],
-                          placeholderBuilder: (BuildContext context) =>
-                              Container(
-                            padding: const EdgeInsets.all(30.0),
-                            child: const CircularProgressIndicator(),
+                        child: Center(
+                          // Centrar la imagen SVG
+                          child: SvgPicture.network(
+                            producto['imagenURL'],
+                            placeholderBuilder: (BuildContext context) =>
+                                Container(
+                              padding: const EdgeInsets.all(30.0),
+                              child: const CircularProgressIndicator(),
+                            ),
+                            height: 100, // Altura de la imagen
                           ),
-                          height: 100,
                         ),
                       ),
                     ),
@@ -96,8 +101,13 @@ class CatalogoPage extends StatelessWidget {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Acción para añadir nuevos productos
+        onPressed: () async {
+          await Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) =>
+                    AddProductPage()), // Navega a la página de añadir productos
+          );
         },
         child: Icon(Icons.add), // Icono del botón flotante
       ),
