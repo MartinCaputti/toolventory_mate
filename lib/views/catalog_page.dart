@@ -1,4 +1,5 @@
 //lib/views/catalog_page.dart
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -6,7 +7,7 @@ import '../controllers/product_controller.dart';
 import 'add_product_page.dart';
 import 'edit_product_page.dart';
 import '../models/product.dart';
-import '../components/product_card.dart';
+import '../components/dismissible_product.dart';
 
 class CatalogoPage extends StatelessWidget {
   final ProductController _controller = ProductController();
@@ -29,12 +30,12 @@ class CatalogoPage extends StatelessWidget {
               nombre: doc['nombre'],
               imagenURL: doc['imagenURL'],
               stock: (doc['stock']
-                      is int) // Esto era innecesario pero cuando agregue el update , sin este parseo lo toma como string y rompe la pantalla
+                      is int) //// Esto era innecesario pero cuando agregue el update , sin este parseo lo toma como string y rompe la pantalla
                   ? doc['stock']
                   : int.parse(doc['stock']),
               descripcion: doc['descripcion'],
             );
-          }).toList(); //hay que convertir los documentos de Firestore (QueryDocumentSnapshot) a objetos Producto antes de utilizarlos.
+          }).toList();
 
           return GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -55,60 +56,10 @@ class CatalogoPage extends StatelessWidget {
                     ),
                   );
                 },
-                child: Dismissible(
-                  key: Key(producto
-                      .id!), //Usar aserciones no-nulas (!) para asegurarse de que id no sea null.
-                  direction: DismissDirection.endToStart,
-                  background: Container(
-                    color: Colors.red,
-                    alignment: Alignment.centerRight,
-                    padding: EdgeInsets.symmetric(horizontal: 10.0),
-                    child: Icon(Icons.delete, color: Colors.white),
-                  ),
-                  confirmDismiss: (direction) async {
-                    bool result = false;
-                    result = await showDialog(
-                      context: context,
-                      builder: (context) {
-                        return AlertDialog(
-                          title: Text('¿Seguro que desea borrar?'),
-                          actions: [
-                            TextButton(
-                              onPressed: () {
-                                return Navigator.pop(context, false);
-                              },
-                              child: const Text(
-                                'Cancelar',
-                                style: TextStyle(color: Colors.red),
-                              ),
-                            ),
-                            TextButton(
-                              onPressed: () {
-                                return Navigator.pop(context, true);
-                              },
-                              child: const Text(
-                                'Confirmar',
-                                style: TextStyle(
-                                    color: Color.fromARGB(255, 76, 244, 54)),
-                              ),
-                            ),
-                          ],
-                        );
-                      },
-                    );
-                    return result;
-                  },
-                  onDismissed: (direction) async {
-                    await _controller.deleteProduct(producto
-                        .id!); // Usar aserciones no-nulas (!) para asegurarse de que id no sea null.
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(content: Text('${producto.nombre} eliminado')),
-                    );
-                  },
-                  child: ProductCard(
-                      producto:
-                          producto), // Utilizo el mi widget ProductCard para modularizar
-                ),
+                child: DismissibleProduct(
+                  producto: producto,
+                  controller: _controller,
+                ), // Uso mi DismissibleProduct para modularizar
               );
             },
           );
