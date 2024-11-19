@@ -10,7 +10,7 @@ class FirebaseService {
   Future<void> addProduct(Producto producto) async {
     await _productCollection.add({
       'nombre': producto.nombre,
-      'imagenUrl': producto.imagenUrl,
+      'imagenURL': producto.imagenURL,
       'stock': producto.stock,
       'descripcion': producto.descripcion,
     });
@@ -21,7 +21,7 @@ class FirebaseService {
     return snapshot.docs.map((doc) {
       return Producto(
         nombre: doc['nombre'],
-        imagenUrl: doc['imagenUrl'],
+        imagenURL: doc['imagenURL'],
         stock: doc['stock'],
         descripcion: doc['descripcion'],
       );
@@ -33,7 +33,7 @@ class FirebaseService {
       return snapshot.docs.map((doc) {
         return Producto(
           nombre: doc['nombre'],
-          imagenUrl: doc['imagenUrl'],
+          imagenURL: doc['imagenURL'],
           stock: doc['stock'],
           descripcion: doc['descripcion'],
         );

@@ -8,22 +8,81 @@ class CatalogoPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Inventario de Productos'),
+        title: Text('Inventario de Productos'), // Título en  AppBar
       ),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('productos').snapshots(),
+        stream: FirebaseFirestore.instance
+            .collection('productos')
+            .snapshots(), // Escucha cambios en la colección 'productos'
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
+            // Si no tengo nada en la base o mientras se espero los datos de Firestore
+            return Center(
+                child:
+                    CircularProgressIndicator()); // Muestra un indicador de carga
           }
-          var productos = snapshot.data!.docs;
-          return ListView.builder(
-            itemCount: productos.length,
+          var productos =
+              snapshot.data!.docs; // Obtiene los documentos de productos
+          return GridView.builder(
+            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2, // Número de columnas en el GridView
+              childAspectRatio: 2 / 3, // Proporción de los elementos en el grid
+              crossAxisSpacing: 10, // Espaciado horizontal entre los elementos
+              mainAxisSpacing: 10, // Espaciado vertical entre los elementos
+            ),
+            itemCount: productos.length, // Número de elementos en el GridView
             itemBuilder: (context, index) {
               var producto = productos[index];
-              return ListTile(
-                title: Text(producto['nombre']),
-                subtitle: Text('Stock: ${producto['stock']}'),
+              return Card(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment
+                      .start, // Alineación del contenido al inicio
+                  children: [
+                    Expanded(
+                      child: Container(
+                        padding: EdgeInsets.all(
+                            8.0), // Espaciado interno en el contenedor
+                        child: SingleChildScrollView(
+                          // Permite desplazamiento si el contenido es demasiado grande
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment
+                                .start, // Alineación del contenido de la columna al inicio
+                            children: [
+                              Text(
+                                producto['nombre'],
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight
+                                        .bold), // Estilo del texto del nombre del producto
+                              ),
+                              SizedBox(
+                                  height:
+                                      4.0), // Espacio entre el nombre y el stock
+                              Text(
+                                'Stock: ${producto['stock']}',
+                                style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors
+                                        .grey), // Estilo del texto del stock
+                              ),
+                              SizedBox(
+                                  height:
+                                      4.0), // Espacio entre el stock y la descripción
+                              Text(
+                                producto['descripcion'] ??
+                                    '', // Descripción del producto (si existe)
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    color: Colors.grey[
+                                        600]), // Estilo del texto de la descripción
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               );
             },
           );
@@ -33,64 +92,8 @@ class CatalogoPage extends StatelessWidget {
         onPressed: () {
           // Acción para añadir nuevos productos
         },
-        child: Icon(Icons.add),
+        child: Icon(Icons.add), // Icono del botón flotante
       ),
     );
   }
 }
-
-/*
-import 'package:flutter/material.dart';
-import '../components/product_card.dart';
-import '../controllers/product_controller.dart';
-import '../models/product.dart';
-import 'add_product_page.dart'; // Importa la nueva página
-
-class CatalogoPage extends StatefulWidget {
-  @override
-  _CatalogoPageState createState() => _CatalogoPageState();
-}
-
-class _CatalogoPageState extends State<CatalogoPage> {
-  final ProductController _controller = ProductController();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Inventario de Productos'),
-      ),
-      body: StreamBuilder<List<Producto>>(
-        stream: _controller.productStream(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
-          }
-          List<Producto> productos = snapshot.data!;
-          return GridView.builder(
-            gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2,
-              childAspectRatio: 3 / 2,
-              crossAxisSpacing: 10,
-              mainAxisSpacing: 10,
-            ),
-            itemCount: productos.length,
-            itemBuilder: (context, index) {
-              return ProductCard(producto: productos[index]);
-            },
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AddProductPage()),
-          );
-        },
-        child: Icon(Icons.add),
-      ),
-    );
-  }
-}
-*/

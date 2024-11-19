@@ -20,7 +20,7 @@ class _AddProductPageState extends State<AddProductPage> {
     if (_formKey.currentState!.validate()) {
       final producto = Producto(
         nombre: _nombreController.text,
-        imagenUrl: _imagenUrlController.text,
+        imagenURL: _imagenUrlController.text,
         stock: int.parse(_stockController.text),
         descripcion: _descripcionController.text,
       );
