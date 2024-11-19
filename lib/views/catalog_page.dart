@@ -35,7 +35,7 @@ class CatalogoPage extends StatelessWidget {
                   : int.parse(doc['stock']),
               descripcion: doc['descripcion'],
             );
-          }).toList();
+          }).toList(); //hay que convertir los documentos de Firestore (QueryDocumentSnapshot) a objetos Producto antes de utilizarlos.
 
           return GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
