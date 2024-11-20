@@ -13,4 +13,21 @@ class Producto {
     required this.stock,
     this.descripcion,
   });
+
+  // Método copyWith para actualizar atributos específicos.
+  //https://api.flutter.dev/flutter/material/TextTheme/copyWith.html
+  Producto copyWith(
+      {String? id,
+      String? nombre,
+      String? imagenURL,
+      int? stock,
+      String? descripcion}) {
+    return Producto(
+      id: id ?? this.id,
+      nombre: nombre ?? this.nombre,
+      imagenURL: imagenURL ?? this.imagenURL,
+      stock: stock ?? this.stock,
+      descripcion: descripcion ?? this.descripcion,
+    );
+  }
 }

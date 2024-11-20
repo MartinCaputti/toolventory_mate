@@ -16,7 +16,7 @@ class FirebaseService {
     });
     await _productCollection.doc(docRef.id).update({
       'id': docRef.id
-    }); //Actualiza el documento con el id generado ,sin esto el uptade explota
+    }); // Actualiza el documento con el id generado ,sin esto el uptade explota
   }
 
   Future<void> deleteProduct(String id) async {
@@ -29,6 +29,12 @@ class FirebaseService {
       'imagenURL': producto.imagenURL,
       'stock': producto.stock,
       'descripcion': producto.descripcion,
+    });
+  }
+
+  Future<void> updateStock(String id, int newStock) async {
+    await _productCollection.doc(id).update({
+      'stock': newStock, // Actualiza solo el stock
     });
   }
 

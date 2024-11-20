@@ -26,4 +26,8 @@ class ProductController {
   Future<void> updateProduct(String id, Producto producto) async {
     await _firebaseService.updateProduct(id, producto);
   }
+
+  Future<void> updateStock(String id, int newStock) async {
+    await _firebaseService.updateStock(id, newStock); // Actualiza solo el stock
+  }
 }

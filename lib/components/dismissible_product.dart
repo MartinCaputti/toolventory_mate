@@ -3,14 +3,12 @@
 import 'package:flutter/material.dart';
 import '../models/product.dart';
 import '../controllers/product_controller.dart';
-import 'product_card.dart'; // Importar el widget ProductCard
+import 'product_card.dart';
 
 class DismissibleProduct extends StatelessWidget {
   final Producto producto;
   final ProductController controller;
-
   DismissibleProduct({required this.producto, required this.controller});
-
   @override
   Widget build(BuildContext context) {
     return Dismissible(
@@ -63,7 +61,9 @@ class DismissibleProduct extends StatelessWidget {
         );
       },
       child: ProductCard(
-          producto: producto), // Utilizo el widget ProductCard para modularizar
+        producto: producto,
+        controller: controller, // Pasar el controlador también
+      ),
     );
   }
 }
