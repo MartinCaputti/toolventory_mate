@@ -6,12 +6,15 @@ class Producto {
   final String imagenURL;
   final int stock;
   final String? descripcion;
+  final String categoria;
+
   Producto({
     this.id, // El id es opcional para que Firestore lo genere automáticamente
     required this.nombre,
     required this.imagenURL,
     required this.stock,
     this.descripcion,
+    required this.categoria,
   });
 
   // Método copyWith para actualizar atributos específicos.
@@ -21,13 +24,17 @@ class Producto {
       String? nombre,
       String? imagenURL,
       int? stock,
-      String? descripcion}) {
+      String? descripcion,
+      String? categoria}) {
     return Producto(
       id: id ?? this.id,
       nombre: nombre ?? this.nombre,
       imagenURL: imagenURL ?? this.imagenURL,
       stock: stock ?? this.stock,
       descripcion: descripcion ?? this.descripcion,
+      categoria: categoria ?? this.categoria,
     );
   }
+
+  //Agregue las categorias despues
 }

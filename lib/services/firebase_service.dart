@@ -2,10 +2,14 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/product.dart';
+import '../models/category.dart';
 
 class FirebaseService {
   final CollectionReference _productCollection =
       FirebaseFirestore.instance.collection('productos');
+  //Agregue coleccion categorias despues
+  final CollectionReference _categoryCollection =
+      FirebaseFirestore.instance.collection('categorias');
 
   Future<void> addProduct(Producto producto) async {
     DocumentReference docRef = await _productCollection.add({
@@ -13,10 +17,9 @@ class FirebaseService {
       'imagenURL': producto.imagenURL,
       'stock': producto.stock,
       'descripcion': producto.descripcion,
+      'categoria': producto.categoria,
     });
-    await _productCollection.doc(docRef.id).update({
-      'id': docRef.id
-    }); // Actualiza el documento con el id generado ,sin esto el uptade explota
+    await _productCollection.doc(docRef.id).update({'id': docRef.id});
   }
 
   Future<void> deleteProduct(String id) async {
@@ -29,6 +32,7 @@ class FirebaseService {
       'imagenURL': producto.imagenURL,
       'stock': producto.stock,
       'descripcion': producto.descripcion,
+      'categoria': producto.categoria,
     });
   }
 
@@ -47,6 +51,7 @@ class FirebaseService {
         imagenURL: doc['imagenURL'],
         stock: doc['stock'],
         descripcion: doc['descripcion'],
+        categoria: doc['categoria'],
       );
     }).toList();
   }
@@ -60,8 +65,17 @@ class FirebaseService {
           imagenURL: doc['imagenURL'],
           stock: doc['stock'],
           descripcion: doc['descripcion'],
+          categoria: doc['categoria'],
         );
       }).toList();
     });
+  }
+
+  Future<void> addCategory(Categoria categoria) async {
+    DocumentReference docRef = await _categoryCollection.add({
+      'nombre': categoria.nombre,
+      'imagenURL': categoria.imagenURL,
+    });
+    await _categoryCollection.doc(docRef.id).update({'id': docRef.id});
   }
 }

@@ -1,8 +1,10 @@
 //lib/views/add_product_page.dart
 
 import 'package:flutter/material.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/product.dart';
 import '../controllers/product_controller.dart';
+import '../models/category.dart';
 
 class AddProductPage extends StatefulWidget {
   @override
@@ -12,18 +14,20 @@ class AddProductPage extends StatefulWidget {
 class _AddProductPageState extends State<AddProductPage> {
   final _formKey = GlobalKey<FormState>();
   final _nombreController = TextEditingController();
-  final _imagenUrlController = TextEditingController();
+  final _imagenURLController = TextEditingController();
   final _stockController = TextEditingController();
   final _descripcionController = TextEditingController();
   final ProductController _controller = ProductController();
+  String? _selectedCategory; // Para almacenar la categoría seleccionada
 
   void _addProduct() async {
-    if (_formKey.currentState!.validate()) {
+    if (_formKey.currentState!.validate() && _selectedCategory != null) {
       final producto = Producto(
         nombre: _nombreController.text,
-        imagenURL: _imagenUrlController.text,
+        imagenURL: _imagenURLController.text,
         stock: int.parse(_stockController.text),
         descripcion: _descripcionController.text,
+        categoria: _selectedCategory!, // Incluye la categoría seleccionada
       );
       await _controller.addProduct(producto);
       Navigator.pop(context); // Volver a la página anterior
@@ -46,7 +50,6 @@ class _AddProductPageState extends State<AddProductPage> {
                 controller: _nombreController,
                 decoration: InputDecoration(labelText: 'Nombre'),
                 validator: (value) {
-                  // Validación del campo
                   if (value == null || value.isEmpty) {
                     return 'Por favor ingrese el nombre';
                   }
@@ -54,8 +57,7 @@ class _AddProductPageState extends State<AddProductPage> {
                 },
               ),
               TextFormField(
-                //Sigo trabajando con URLs para Imagenes
-                controller: _imagenUrlController,
+                controller: _imagenURLController,
                 decoration: InputDecoration(labelText: 'URL de la Imagen'),
                 validator: (value) {
                   if (value == null || value.isEmpty) {
@@ -67,8 +69,7 @@ class _AddProductPageState extends State<AddProductPage> {
               TextFormField(
                 controller: _stockController,
                 decoration: InputDecoration(labelText: 'Stock'),
-                keyboardType: TextInputType
-                    .number, //// Tipo de teclado para ingresar números
+                keyboardType: TextInputType.number,
                 validator: (value) {
                   if (value == null || value.isEmpty) {
                     return 'Por favor ingrese la cantidad de stock';
@@ -84,6 +85,43 @@ class _AddProductPageState extends State<AddProductPage> {
                     return 'Por favor ingrese la descripción';
                   }
                   return null;
+                },
+              ),
+              StreamBuilder<QuerySnapshot>(
+                stream: FirebaseFirestore.instance
+                    .collection('categorias')
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (!snapshot.hasData) {
+                    return CircularProgressIndicator();
+                  }
+                  var categorias = snapshot.data!.docs.map((doc) {
+                    return Categoria(
+                      id: doc.id,
+                      nombre: doc['nombre'],
+                      imagenURL: doc['imagenURL'],
+                    );
+                  }).toList();
+                  return DropdownButtonFormField<String>(
+                    decoration: InputDecoration(labelText: 'Categoría'),
+                    items: categorias.map((categoria) {
+                      return DropdownMenuItem(
+                        value: categoria.nombre,
+                        child: Text(categoria.nombre),
+                      );
+                    }).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        _selectedCategory = value;
+                      });
+                    },
+                    validator: (value) {
+                      if (value == null) {
+                        return 'Por favor seleccione una categoría';
+                      }
+                      return null;
+                    },
+                  );
                 },
               ),
               SizedBox(height: 20),

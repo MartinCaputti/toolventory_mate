@@ -2,24 +2,33 @@
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import '../controllers/product_controller.dart';
-import 'add_product_page.dart';
-import 'edit_product_page.dart';
-import '../models/product.dart';
 import '../components/dismissible_product.dart';
+import '../models/product.dart';
+import 'edit_product_page.dart';
+import 'add_product_page.dart';
 
 class CatalogoPage extends StatelessWidget {
   final ProductController _controller = ProductController();
+  final String? category; // Parámetro opcional para filtrar por categoría
+
+  CatalogoPage({this.category});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Inventario de Productos'),
+        title: Text(category != null
+            ? 'Productos en $category'
+            : 'Inventario de Productos'),
       ),
       body: StreamBuilder(
-        stream: FirebaseFirestore.instance.collection('productos').snapshots(),
+        stream: category != null
+            ? FirebaseFirestore.instance
+                .collection('productos')
+                .where('categoria', isEqualTo: category)
+                .snapshots()
+            : FirebaseFirestore.instance.collection('productos').snapshots(),
         builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData) {
             return Center(child: CircularProgressIndicator());
@@ -29,13 +38,13 @@ class CatalogoPage extends StatelessWidget {
               id: doc.id,
               nombre: doc['nombre'],
               imagenURL: doc['imagenURL'],
-              stock: (doc['stock']
-                      is int) //// Esto era innecesario pero cuando agregue el update , sin este parseo lo toma como string y rompe la pantalla
+              stock: (doc['stock'] is int)
                   ? doc['stock']
                   : int.parse(doc['stock']),
               descripcion: doc['descripcion'],
+              categoria: doc['categoria'],
             );
-          }).toList(); //hay que convertir los documentos de Firestore (QueryDocumentSnapshot) a objetos Producto antes de utilizarlos.
+          }).toList();
 
           return GridView.builder(
             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -59,21 +68,23 @@ class CatalogoPage extends StatelessWidget {
                 child: DismissibleProduct(
                   producto: producto,
                   controller: _controller,
-                ), // Uso mi DismissibleProduct para modularizar
+                ),
               );
             },
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          await Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => AddProductPage()),
-          );
-        },
-        child: Icon(Icons.add),
-      ),
+      floatingActionButton: category == null
+          ? FloatingActionButton(
+              onPressed: () async {
+                await Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => AddProductPage()),
+                );
+              },
+              child: Icon(Icons.add),
+            )
+          : null, // Oculta el botón de añadir producto en la vista de categorías
     );
   }
 }
