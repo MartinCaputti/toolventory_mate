@@ -1,8 +1,9 @@
+//lib/views/category_page.dart
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'category_products_page.dart';
 import '../models/category.dart';
-import '../components/product_image.dart'; // Importar el widget ProductImage
+import '../components/category_card.dart';
 
 class CategoryPage extends StatelessWidget {
   @override
@@ -35,42 +36,10 @@ class CategoryPage extends StatelessWidget {
             itemCount: categorias.length,
             itemBuilder: (context, index) {
               var categoria = categorias[index];
-              return CategoryCard(categoria: categoria);
+              return CategoryCard(categoria: categoria); // Uso el nuevo widget
             },
           );
         },
-      ),
-    );
-  }
-}
-
-class CategoryCard extends StatelessWidget {
-  final Categoria categoria;
-
-  CategoryCard({required this.categoria});
-
-  @override
-  Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-              builder: (context) =>
-                  CategoryProductsPage(category: categoria.nombre)),
-        );
-      },
-      child: Card(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            ProductImage(
-                imagenURL:
-                    categoria.imagenURL), // Utiliza el widget ProductImage
-            SizedBox(height: 10),
-            Text(categoria.nombre),
-          ],
-        ),
       ),
     );
   }

@@ -15,3 +15,7 @@ class CategoryProductsPage extends StatelessWidget {
             category); // Reutiliza CatalogoPage con el filtro de categoría
   }
 }
+
+/*CategoryPage muestra una lista de todas las categorías disponibles. 
+Cuando elijo una categoría,  lleva a CategoryProductsPage, que muestra una lista de productos filtrados por la categoría seleccionada 
+utilizando la lógica ya existente en CatalogoPage.*/
