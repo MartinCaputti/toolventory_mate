@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class Producto {
   final String?
       id; // // id nunca va a ser null porque firestore lo genera automaticamente , pero mi programa no lo sabe asi que tengo que aclarar que puede ser nulo
@@ -37,4 +39,15 @@ class Producto {
   }
 
   //Agregue las categorias despues
+
+  factory Producto.fromSnapshot(DocumentSnapshot doc) {
+    return Producto(
+      id: doc.id,
+      nombre: doc['nombre'],
+      imagenURL: doc['imagenURL'],
+      stock: (doc['stock'] is int) ? doc['stock'] : int.parse(doc['stock']),
+      descripcion: doc['descripcion'],
+      categoria: doc['categoria'],
+    );
+  }
 }

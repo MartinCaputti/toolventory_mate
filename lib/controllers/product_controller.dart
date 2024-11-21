@@ -1,33 +1,59 @@
-//lib/controllers/product_controller.dart
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/product.dart';
 import '../services/firebase_service.dart';
 
 class ProductController {
   final FirebaseService _firebaseService = FirebaseService();
 
-  Future<List<Producto>> fetchProducts() async {
-    return await _firebaseService.getProducts();
+  Stream<QuerySnapshot<Object?>> streamProducts() {
+    return _firebaseService.streamProducts();
+  }
+
+  Stream<QuerySnapshot<Object?>> streamProductsByCategory(String category) {
+    return _firebaseService.streamProductsByCategory(category);
   }
 
   Future<void> addProduct(Producto producto) async {
     await _firebaseService.addProduct(producto);
   }
 
-  Stream<List<Producto>> productStream() {
-    return _firebaseService.productStream();
+  Future<void> deleteProduct(String productId) async {
+    await _firebaseService.deleteProduct(productId);
   }
 
-  Future<void> deleteProduct(String id) async {
-    // Controlador que llama a deleteProduct en FirebaseService para eliminar un producto.
-    await _firebaseService.deleteProduct(id);
+  Future<void> updateProduct(String productId, Producto producto) async {
+    await _firebaseService.updateProduct(productId, producto);
   }
 
-  Future<void> updateProduct(String id, Producto producto) async {
-    await _firebaseService.updateProduct(id, producto);
+  Future<void> updateStock(String productId, int newStock) async {
+    await _firebaseService.updateStock(productId, newStock);
   }
 
-  Future<void> updateStock(String id, int newStock) async {
-    await _firebaseService.updateStock(id, newStock); // Actualiza solo el stock
+  Future<List<Producto>> fetchProducts({int limit = 10}) async {
+    QuerySnapshot<Object?> snapshot =
+        await _firebaseService.getProducts(limit: limit);
+    return _firebaseService.convertSnapshotToProducts(snapshot);
+  }
+
+  Future<List<Producto>> fetchMoreProducts(
+      {DocumentSnapshot<Object?>? lastDocument, int limit = 10}) async {
+    QuerySnapshot<Object?> snapshot = await _firebaseService.getMoreProducts(
+        lastDocument: lastDocument, limit: limit);
+    return _firebaseService.convertSnapshotToProducts(snapshot);
+  }
+
+  Future<List<Producto>> fetchProductsByCategory(String category,
+      {int limit = 10}) async {
+    QuerySnapshot<Object?> snapshot =
+        await _firebaseService.getProductsByCategory(category, limit: limit);
+    return _firebaseService.convertSnapshotToProducts(snapshot);
+  }
+
+  Future<List<Producto>> fetchMoreProductsByCategory(String category,
+      {DocumentSnapshot<Object?>? lastDocument, int limit = 10}) async {
+    QuerySnapshot<Object?> snapshot =
+        await _firebaseService.getMoreProductsByCategory(category,
+            lastDocument: lastDocument, limit: limit);
+    return _firebaseService.convertSnapshotToProducts(snapshot);
   }
 }

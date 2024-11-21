@@ -1,5 +1,3 @@
-//lib/services/firebase_service.dart
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/product.dart';
 import '../models/category.dart';
@@ -7,7 +5,6 @@ import '../models/category.dart';
 class FirebaseService {
   final CollectionReference _productCollection =
       FirebaseFirestore.instance.collection('productos');
-  //Agregue coleccion categorias despues
   final CollectionReference _categoryCollection =
       FirebaseFirestore.instance.collection('categorias');
 
@@ -38,37 +35,55 @@ class FirebaseService {
 
   Future<void> updateStock(String id, int newStock) async {
     await _productCollection.doc(id).update({
-      'stock': newStock, // Actualiza solo el stock
+      'stock': newStock,
     });
   }
 
-  Future<List<Producto>> getProducts() async {
-    QuerySnapshot snapshot = await _productCollection.get();
-    return snapshot.docs.map((doc) {
-      return Producto(
-        id: doc.id,
-        nombre: doc['nombre'],
-        imagenURL: doc['imagenURL'],
-        stock: doc['stock'],
-        descripcion: doc['descripcion'],
-        categoria: doc['categoria'],
-      );
-    }).toList();
+  Future<QuerySnapshot<Object?>> getProducts({int limit = 10}) async {
+    return await _productCollection.orderBy('nombre').limit(limit).get();
   }
 
-  Stream<List<Producto>> productStream() {
-    return _productCollection.snapshots().map((snapshot) {
-      return snapshot.docs.map((doc) {
-        return Producto(
-          id: doc.id,
-          nombre: doc['nombre'],
-          imagenURL: doc['imagenURL'],
-          stock: doc['stock'],
-          descripcion: doc['descripcion'],
-          categoria: doc['categoria'],
-        );
-      }).toList();
-    });
+  Future<QuerySnapshot<Object?>> getMoreProducts(
+      {DocumentSnapshot<Object?>? lastDocument, int limit = 10}) async {
+    return await _productCollection
+        .orderBy('nombre')
+        .startAfterDocument(lastDocument!)
+        .limit(limit)
+        .get();
+  }
+
+  Future<QuerySnapshot<Object?>> getProductsByCategory(String category,
+      {int limit = 10}) async {
+    return await _productCollection
+        .where('categoria', isEqualTo: category)
+        .orderBy('nombre')
+        .limit(limit)
+        .get();
+  }
+
+  Future<QuerySnapshot<Object?>> getMoreProductsByCategory(String category,
+      {DocumentSnapshot<Object?>? lastDocument, int limit = 10}) async {
+    return await _productCollection
+        .where('categoria', isEqualTo: category)
+        .orderBy('nombre')
+        .startAfterDocument(lastDocument!)
+        .limit(limit)
+        .get();
+  }
+
+  List<Producto> convertSnapshotToProducts(QuerySnapshot<Object?> snapshot) {
+    return snapshot.docs.map((doc) => Producto.fromSnapshot(doc)).toList();
+  }
+
+  Stream<QuerySnapshot<Object?>> streamProducts() {
+    return _productCollection.orderBy('nombre').snapshots();
+  }
+
+  Stream<QuerySnapshot<Object?>> streamProductsByCategory(String category) {
+    return _productCollection
+        .where('categoria', isEqualTo: category)
+        .orderBy('nombre')
+        .snapshots();
   }
 
   Future<void> addCategory(Categoria categoria) async {
