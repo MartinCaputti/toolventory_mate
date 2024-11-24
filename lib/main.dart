@@ -1,8 +1,10 @@
 //lib/main.dart
+
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart'; // Importa Firebase
 import 'views/catalog_page.dart'; // Importar CatalogoPage
 import 'views/category_page.dart'; // Importar CategoryPage
+import 'views/furniture_page.dart'; // Importar FurniturePage
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Asegúrate de inicializar Flutter
@@ -34,7 +36,7 @@ class _HomePageState extends State<HomePage> {
   static final List<Widget> _widgetOptions = <Widget>[
     CategoryPage(),
     CatalogoPage(),
-    // Añadir más vistas aquí si es necesario
+    MueblesPage(), // Añadir la página de muebles
   ];
 
   void _onItemTapped(int index) {
@@ -60,6 +62,10 @@ class _HomePageState extends State<HomePage> {
           BottomNavigationBarItem(
             icon: Icon(Icons.inventory),
             label: 'Inventario',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.chair),
+            label: 'Muebles', // Añadir un ítem para la página de muebles
           ),
         ],
         currentIndex: _selectedIndex,
