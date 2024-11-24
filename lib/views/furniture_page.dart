@@ -4,6 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../controllers/furniture_controller.dart';
 import '../models/furniture.dart';
 import 'furniture_detail_page.dart';
+import 'add_mueble_page.dart';
 
 class MueblesPage extends StatelessWidget {
   final FurnitureController _controller = FurnitureController();
@@ -59,8 +60,10 @@ class MueblesPage extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          // Navegar a una página para agregar un nuevo mueble
-          // Aquí podrías añadir la lógica para abrir la página de agregar mueble
+          await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => AddMueblePage()),
+          );
         },
         child: Icon(Icons.add),
       ),

@@ -22,12 +22,17 @@ class MuebleDetailPage extends StatelessWidget {
       int cantidadNecesaria = entry.value['cantidad'];
       DocumentSnapshot productDoc =
           await _productController.getProductById(productoId);
-      Producto producto = Producto.fromSnapshot(productDoc);
 
-      if (producto.stock < cantidadNecesaria) {
+      if (!productDoc.exists) {
         stockSuficiente = false;
-        mensajeError +=
-            '${entry.value['nombre']} (falta ${cantidadNecesaria - producto.stock}), ';
+        mensajeError += 'Producto con ID $productoId no existe, ';
+      } else {
+        Producto producto = Producto.fromSnapshot(productDoc);
+        if (producto.stock < cantidadNecesaria) {
+          stockSuficiente = false;
+          mensajeError +=
+              '${producto.nombre} (falta ${cantidadNecesaria - producto.stock}), ';
+        }
       }
     }
 
@@ -60,17 +65,14 @@ class MuebleDetailPage extends StatelessWidget {
   }
 
   Future<void> venderMueble(BuildContext context) async {
-    // Actualizar el stock del mueble
     if (mueble.stock > 0) {
       int nuevoStockMueble = mueble.stock - 1; // Restar 1 del stock de muebles
       await _furnitureController.updateMuebleStock(mueble.id, nuevoStockMueble);
 
-      // Mostrar mensaje de éxito
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('Mueble vendido correctamente.')),
       );
     } else {
-      // Mostrar mensaje de error si no hay stock para vender
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(content: Text('No hay stock suficiente para vender.')),
       );
