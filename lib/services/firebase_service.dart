@@ -149,4 +149,10 @@ class FirebaseService {
   Future<DocumentSnapshot> getProductById(String id) async {
     return await _productCollection.doc(id).get();
   }
+
+  Future<void> updateMuebleStock(String id, int newStock) async {
+    await _muebleCollection.doc(id).update({
+      'stock': newStock,
+    });
+  }
 }

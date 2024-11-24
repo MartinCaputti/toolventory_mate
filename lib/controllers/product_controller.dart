@@ -66,4 +66,8 @@ class ProductController {
         quantityUsed; // Restar la cantidad usada del stock actual
     await _firebaseService.updateStock(productId, newStock);
   }
+
+  Future<DocumentSnapshot> getProductById(String productId) async {
+    return await _firebaseService.getProductById(productId);
+  }
 }

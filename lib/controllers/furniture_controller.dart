@@ -26,4 +26,8 @@ class FurnitureController {
   Future<DocumentSnapshot> getMuebleById(String muebleId) async {
     return await _firebaseService.getMuebleById(muebleId);
   }
+
+  Future<void> updateMuebleStock(String muebleId, int newStock) async {
+    await _firebaseService.updateMuebleStock(muebleId, newStock);
+  }
 }
