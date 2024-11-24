@@ -145,4 +145,8 @@ class FirebaseService {
   Stream<QuerySnapshot> streamMuebles() {
     return _muebleCollection.orderBy('nombre').snapshots();
   }
+
+  Future<DocumentSnapshot> getProductById(String id) async {
+    return await _productCollection.doc(id).get();
+  }
 }

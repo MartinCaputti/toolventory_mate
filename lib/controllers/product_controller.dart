@@ -56,4 +56,14 @@ class ProductController {
             lastDocument: lastDocument, limit: limit);
     return _firebaseService.convertSnapshotToProducts(snapshot);
   }
+
+  Future<void> updateStockForFurniture(
+      String productId, int quantityUsed) async {
+    DocumentSnapshot productDoc =
+        await _firebaseService.getProductById(productId);
+    Producto producto = Producto.fromSnapshot(productDoc);
+    int newStock = producto.stock -
+        quantityUsed; // Restar la cantidad usada del stock actual
+    await _firebaseService.updateStock(productId, newStock);
+  }
 }
