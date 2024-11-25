@@ -36,7 +36,7 @@ class _HomePageState extends State<HomePage> {
   static final List<Widget> _widgetOptions = <Widget>[
     CategoryPage(),
     CatalogoPage(),
-    MueblesPage(), // Añadir la página de muebles
+    FurniturePage(), // Añadir la página de muebles
   ];
 
   void _onItemTapped(int index) {

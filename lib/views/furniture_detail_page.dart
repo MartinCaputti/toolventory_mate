@@ -1,9 +1,12 @@
+//lib/views/furniture_detail_page.dart
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/furniture.dart';
 import '../models/product.dart';
 import '../controllers/furniture_controller.dart';
 import '../controllers/product_controller.dart';
+import 'edit_furniture_page.dart';
 
 class MuebleDetailPage extends StatelessWidget {
   final Mueble mueble;
@@ -79,11 +82,60 @@ class MuebleDetailPage extends StatelessWidget {
     }
   }
 
+  Future<void> borrarMueble(BuildContext context) async {
+    bool? confirmar = await showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: Text('¿Seguro que desea borrar este mueble?'),
+          actions: [
+            TextButton(
+              onPressed: () => Navigator.pop(context, false),
+              child: Text('Cancelar', style: TextStyle(color: Colors.red)),
+            ),
+            TextButton(
+              onPressed: () => Navigator.pop(context, true),
+              child: Text('Confirmar', style: TextStyle(color: Colors.green)),
+            ),
+          ],
+        );
+      },
+    );
+
+    if (confirmar == true) {
+      await _furnitureController.deleteMueble(mueble.id);
+      Navigator.pop(
+          context); // Regresar a la página anterior después de eliminar
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Mueble eliminado correctamente.')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(mueble.nombre),
+        actions: [
+          IconButton(
+            icon: Icon(Icons.edit),
+            onPressed: () async {
+              await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EditFurniturePage(mueble: mueble),
+                ),
+              );
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.delete, color: Color.fromRGBO(173, 10, 10, 0.842)),
+            onPressed: () async {
+              await borrarMueble(context);
+            },
+          ),
+        ],
       ),
       body: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance
@@ -95,9 +147,13 @@ class MuebleDetailPage extends StatelessWidget {
             return Center(child: CircularProgressIndicator());
           }
 
+          if (!snapshot.data!.exists) {
+            return Center(child: Text('El mueble no existe.'));
+          }
+
           Mueble muebleActualizado = Mueble.fromSnapshot(snapshot.data!);
 
-          return Padding(
+          return SingleChildScrollView(
             padding: const EdgeInsets.all(16.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

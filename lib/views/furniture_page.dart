@@ -1,12 +1,13 @@
 //lib/views/furniture_page.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:toolventory_mate/views/add_furniture_page.dart';
 import '../controllers/furniture_controller.dart';
 import '../models/furniture.dart';
 import 'furniture_detail_page.dart';
 import 'add_furniture_page.dart';
 
-class MueblesPage extends StatelessWidget {
+class FurniturePage extends StatelessWidget {
   final FurnitureController _controller = FurnitureController();
 
   @override
