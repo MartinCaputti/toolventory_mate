@@ -4,7 +4,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import '../controllers/furniture_controller.dart';
 import '../models/furniture.dart';
 import 'furniture_detail_page.dart';
-import 'add_mueble_page.dart';
+import 'add_furniture_page.dart';
 
 class MueblesPage extends StatelessWidget {
   final FurnitureController _controller = FurnitureController();
@@ -62,7 +62,7 @@ class MueblesPage extends StatelessWidget {
         onPressed: () async {
           await Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => AddMueblePage()),
+            MaterialPageRoute(builder: (context) => AddFurniturePage()),
           );
         },
         child: Icon(Icons.add),
