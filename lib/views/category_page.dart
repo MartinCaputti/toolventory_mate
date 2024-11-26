@@ -36,7 +36,7 @@ class CategoryPage extends StatelessWidget {
             itemCount: categorias.length,
             itemBuilder: (context, index) {
               var categoria = categorias[index];
-              return CategoryCard(categoria: categoria); // Uso el nuevo widget
+              return CategoryCard(categoria: categoria); // Uso el widget
             },
           );
         },

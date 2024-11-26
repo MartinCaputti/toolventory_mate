@@ -9,6 +9,7 @@ class DismissibleProduct extends StatelessWidget {
   final Producto producto;
   final ProductController controller;
   DismissibleProduct({required this.producto, required this.controller});
+
   @override
   Widget build(BuildContext context) {
     return Dismissible(
@@ -56,9 +57,12 @@ class DismissibleProduct extends StatelessWidget {
       onDismissed: (direction) async {
         await controller.deleteProduct(producto
             .id!); // Usar aserciones no-nulas (!) para asegurarse de que id no sea null.
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('${producto.nombre} eliminado')),
-        );
+        if (context.mounted) {
+          // Verificar si el contexto aún está montado
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('${producto.nombre} eliminado')),
+          );
+        }
       },
       child: ProductCard(
         producto: producto,

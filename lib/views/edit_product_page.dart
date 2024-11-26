@@ -20,8 +20,7 @@ class EditProductPage extends StatelessWidget {
       body: ProductForm(
         producto: producto,
         onSave: (updatedProducto) async {
-          await _productController.updateProduct(
-              updatedProducto.id!, updatedProducto);
+          await _productController.updateProduct(updatedProducto);
           Navigator.pop(context);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Producto actualizado correctamente.')),

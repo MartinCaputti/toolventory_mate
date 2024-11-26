@@ -2,32 +2,30 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/furniture.dart';
-import '../services/firebase_service.dart';
 
 class FurnitureController {
-  final FirebaseService _firebaseService = FirebaseService();
-
   Stream<QuerySnapshot> streamMuebles() {
-    return _firebaseService.streamMuebles();
+    return Mueble.streamAll();
   }
 
   Future<void> addMueble(Mueble mueble) async {
-    await _firebaseService.addMueble(mueble);
+    await mueble.save();
   }
 
   Future<void> deleteMueble(String muebleId) async {
-    await _firebaseService.deleteMueble(muebleId);
+    Mueble mueble = await Mueble.getById(muebleId);
+    await mueble.delete();
   }
 
-  Future<void> updateMueble(String muebleId, Mueble mueble) async {
-    await _firebaseService.updateMueble(muebleId, mueble);
+  Future<void> updateMueble(Mueble mueble) async {
+    await mueble.save();
   }
 
-  Future<DocumentSnapshot> getMuebleById(String muebleId) async {
-    return await _firebaseService.getMuebleById(muebleId);
+  Future<Mueble> getMuebleById(String muebleId) async {
+    return await Mueble.getById(muebleId);
   }
 
   Future<void> updateMuebleStock(String muebleId, int newStock) async {
-    await _firebaseService.updateMuebleStock(muebleId, newStock);
+    await Mueble.updateStock(muebleId, newStock);
   }
 }

@@ -62,7 +62,7 @@ class _StockControlsState extends State<StockControls> {
     setState(() {
       currentStock = newStock; // Actualiza el estado localmente.
     });
-    await widget.controller.updateStock(widget.producto.id!,
+    await Producto.updateStock(widget.producto.id!,
         newStock); // Llama al controlador para actualizar solo el stock.
     widget.onStockChanged(
         newStock); // Notifica al parent sobre el cambio de stock.

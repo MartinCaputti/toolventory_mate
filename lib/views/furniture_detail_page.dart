@@ -1,5 +1,4 @@
 //lib/views/furniture_detail_page.dart
-
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/furniture.dart';
@@ -23,14 +22,12 @@ class MuebleDetailPage extends StatelessWidget {
     for (var entry in mueble.productosNecesarios.entries) {
       String productoId = entry.key;
       int cantidadNecesaria = entry.value['cantidad'];
-      DocumentSnapshot productDoc =
-          await _productController.getProductById(productoId);
+      Producto producto = await _productController.getProductById(productoId);
 
-      if (!productDoc.exists) {
+      if (producto == null) {
         stockSuficiente = false;
         mensajeError += 'Producto con ID $productoId no existe, ';
       } else {
-        Producto producto = Producto.fromSnapshot(productDoc);
         if (producto.stock < cantidadNecesaria) {
           stockSuficiente = false;
           mensajeError +=

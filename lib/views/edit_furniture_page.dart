@@ -19,8 +19,7 @@ class EditFurniturePage extends StatelessWidget {
       body: FurnitureForm(
         mueble: mueble,
         onSave: (updatedMueble) async {
-          await _furnitureController.updateMueble(
-              updatedMueble.id, updatedMueble);
+          await _furnitureController.updateMueble(updatedMueble);
           Navigator.pop(context);
           ScaffoldMessenger.of(context).showSnackBar(
             SnackBar(content: Text('Mueble actualizado correctamente.')),

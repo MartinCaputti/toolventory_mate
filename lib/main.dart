@@ -65,7 +65,7 @@ class _HomePageState extends State<HomePage> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.chair),
-            label: 'Muebles', // Añadir un ítem para la página de muebles
+            label: 'Muebles',
           ),
         ],
         currentIndex: _selectedIndex,
