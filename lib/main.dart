@@ -21,19 +21,25 @@ class MyApp extends StatelessWidget {
         scaffoldBackgroundColor: const Color(0xFFF2D0A7),
         appBarTheme: const AppBarTheme(
           backgroundColor: Color(0xFF734429),
-          iconTheme: IconThemeData(color: Colors.white),
+          iconTheme: IconThemeData(color: Color.fromRGBO(217, 149, 67, 1)),
           titleTextStyle: TextStyle(
-            color: Colors.white,
-            fontSize: 20,
+            color: Color.fromRGBO(248, 201, 143, 1),
+            fontSize: 22,
             fontWeight: FontWeight.bold,
           ),
         ),
         bottomNavigationBarTheme: const BottomNavigationBarThemeData(
           backgroundColor: Color(0xFFF2D0A7),
           selectedItemColor: Color(0xFF734429),
-          unselectedItemColor: Colors.grey,
+          unselectedItemColor: Color(
+              0xFFB5838D), // Cambiar el color de los ítems no seleccionados
           selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
           unselectedLabelStyle: TextStyle(fontWeight: FontWeight.normal),
+        ),
+        floatingActionButtonTheme: const FloatingActionButtonThemeData(
+          backgroundColor: Color(0xFF734429), // Color del botón flotante
+          foregroundColor: Color.fromRGBO(
+              217, 149, 67, 1), // Color del icono del botón flotante
         ),
         elevatedButtonTheme: ElevatedButtonThemeData(
           style: ElevatedButton.styleFrom(

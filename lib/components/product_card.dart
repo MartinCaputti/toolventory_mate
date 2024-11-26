@@ -15,6 +15,7 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
+      color: Color.fromRGBO(247, 221, 190, 1),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [

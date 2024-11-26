@@ -23,6 +23,7 @@ class CategoryCard extends StatelessWidget {
         );
       },
       child: Card(
+        color: Color.fromRGBO(247, 221, 190, 1),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

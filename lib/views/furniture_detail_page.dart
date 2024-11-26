@@ -115,7 +115,10 @@ class MuebleDetailPage extends StatelessWidget {
         title: Text(mueble.nombre),
         actions: [
           IconButton(
-            icon: Icon(Icons.edit),
+            icon: Icon(
+              Icons.edit,
+              color: Color.fromRGBO(217, 150, 67, 1),
+            ),
             onPressed: () async {
               await Navigator.push(
                 context,
@@ -126,7 +129,7 @@ class MuebleDetailPage extends StatelessWidget {
             },
           ),
           IconButton(
-            icon: Icon(Icons.delete, color: Color.fromRGBO(173, 10, 10, 0.842)),
+            icon: Icon(Icons.delete, color: Color.fromRGBO(217, 17, 34, 1)),
             onPressed: () async {
               await borrarMueble(context);
             },
