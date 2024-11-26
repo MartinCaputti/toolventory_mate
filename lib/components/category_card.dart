@@ -28,16 +28,23 @@ class CategoryCard extends StatelessWidget {
           children: [
             SvgPicture.asset(
               categoria.imagenURL, // Usar la ruta local de la imagen
-              width: 50, // Ajustar el tamaño según sea necesario
-              height: 50,
+              width: 100, // Aumentar el tamaño de la imagen
+              height: 100,
               placeholderBuilder: (BuildContext context) => Container(
                 padding: const EdgeInsets.all(30.0),
                 child:
                     const CircularProgressIndicator(), // Muestra un indicador de carga
               ),
             ),
-            SizedBox(height: 10),
-            Text(categoria.nombre),
+            SizedBox(
+                height: 20), // Aumentar el espacio entre la imagen y el texto
+            Text(
+              categoria.nombre,
+              style: TextStyle(
+                fontSize: 24, // Aumentar el tamaño del texto
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ],
         ),
       ),

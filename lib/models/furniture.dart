@@ -33,7 +33,8 @@ class Mueble {
 
   Map<String, dynamic> toMap() {
     return {
-      'nombre': nombre,
+      'nombre': capitalizeFirstLetter(
+          nombre), // Capitalizar la primera letra al guardarlo
       'descripcion': descripcion,
       'productosNecesarios': productosNecesarios,
       'imagenURL': imagenURL,
@@ -84,5 +85,11 @@ class Mueble {
 
   static Future<void> updateStock(String id, int newStock) async {
     await collection.doc(id).update({'stock': newStock});
+  }
+
+  // Función para capitalizar la primera letra
+  static String capitalizeFirstLetter(String text) {
+    if (text.isEmpty) return text;
+    return text[0].toUpperCase() + text.substring(1).toLowerCase();
   }
 }

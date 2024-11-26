@@ -1,5 +1,4 @@
 //lib/main.dart
-
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart'; // Importa Firebase
 import 'views/catalog_page.dart'; // Importar CatalogoPage
@@ -18,9 +17,52 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Inventario de Productos',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: const Color(0xFF734429),
+        scaffoldBackgroundColor: const Color(0xFFF2D0A7),
+        appBarTheme: const AppBarTheme(
+          backgroundColor: Color(0xFF734429),
+          iconTheme: IconThemeData(color: Colors.white),
+          titleTextStyle: TextStyle(
+            color: Colors.white,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+          backgroundColor: Color(0xFFF2D0A7),
+          selectedItemColor: Color(0xFF734429),
+          unselectedItemColor: Colors.grey,
+          selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
+          unselectedLabelStyle: TextStyle(fontWeight: FontWeight.normal),
+        ),
+        elevatedButtonTheme: ElevatedButtonThemeData(
+          style: ElevatedButton.styleFrom(
+            backgroundColor:
+                const Color(0xFF734429), // Fondo de botones elevados
+            foregroundColor: Colors.white, // Texto de botones elevados
+            textStyle: const TextStyle(
+              fontWeight: FontWeight.bold,
+              fontSize: 18,
+            ),
+          ),
+        ),
+        textTheme: const TextTheme(
+          bodyLarge: TextStyle(color: Color(0xFF734429)),
+          bodyMedium: TextStyle(color: Color(0xFF734429)),
+          titleLarge: TextStyle(
+            color: Color(0xFF734429),
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        colorScheme: ColorScheme.fromSwatch().copyWith(
+          primary: const Color(0xFF734429),
+          secondary: const Color(0xFFB5838D),
+        ),
       ),
       home: HomePage(), // Definir la pantalla principal
+      routes: {
+        '/furniturePage': (context) => FurniturePage(), // Ruta nombrada
+      },
     );
   }
 }
@@ -49,7 +91,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Gestión de Inventario'),
+        title: const Text('Gestión de Inventario'),
       ),
       body: _widgetOptions
           .elementAt(_selectedIndex), // Muestra la vista seleccionada
@@ -69,7 +111,10 @@ class _HomePageState extends State<HomePage> {
           ),
         ],
         currentIndex: _selectedIndex,
-        selectedItemColor: Colors.blue,
+        selectedItemColor:
+            Theme.of(context).bottomNavigationBarTheme.selectedItemColor,
+        unselectedItemColor:
+            Theme.of(context).bottomNavigationBarTheme.unselectedItemColor,
         onTap: _onItemTapped,
       ),
     );

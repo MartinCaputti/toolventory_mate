@@ -5,7 +5,7 @@ import '../models/furniture.dart';
 
 class FurnitureController {
   Stream<QuerySnapshot> streamMuebles() {
-    return Mueble.streamAll();
+    return Mueble.collection.orderBy('nombre').snapshots();
   }
 
   Future<void> addMueble(Mueble mueble) async {

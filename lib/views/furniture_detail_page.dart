@@ -1,4 +1,3 @@
-//lib/views/furniture_detail_page.dart
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/furniture.dart';
@@ -155,34 +154,100 @@ class MuebleDetailPage extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Image.network(muebleActualizado.imagenURL),
-                SizedBox(height: 8.0),
-                Text(muebleActualizado.descripcion,
-                    style: TextStyle(fontSize: 16.0)),
-                SizedBox(height: 8.0),
-                Text('Stock: ${muebleActualizado.stock}',
-                    style: TextStyle(fontSize: 16.0)),
-                SizedBox(height: 16.0),
-                Text('Productos Necesarios:',
+                Card(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Image.network(muebleActualizado.imagenURL),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          muebleActualizado.nombre,
+                          style: TextStyle(
+                            fontSize: 24.0,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          muebleActualizado.descripcion,
+                          style: TextStyle(fontSize: 16.0),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(8.0),
+                        child: Text(
+                          'Stock: ${muebleActualizado.stock}',
+                          style: TextStyle(fontSize: 16.0),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Divider(),
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8.0),
+                  child: Text(
+                    'Productos Necesarios:',
                     style:
-                        TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold)),
-                for (var entry in muebleActualizado.productosNecesarios.entries)
-                  Text('${entry.value['nombre']}: ${entry.value['cantidad']}',
-                      style: TextStyle(fontSize: 16.0)),
+                        TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
+                  ),
+                ),
+                Card(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        for (var entry
+                            in muebleActualizado.productosNecesarios.entries)
+                          Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 4.0),
+                            child: Text(
+                              '${entry.value['nombre']}: ${entry.value['cantidad']}',
+                              style: TextStyle(fontSize: 16.0),
+                            ),
+                          ),
+                      ],
+                    ),
+                  ),
+                ),
                 SizedBox(height: 16.0),
                 ElevatedButton(
                   onPressed: () async {
                     await construirMueble(context);
                   },
-                  child: Text('Construir Mueble'),
+                  child: Text(
+                    'Construir Mueble',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: Size(double.infinity,
+                        50), // Botón ancho completo y mayor altura
+                  ),
                 ),
                 SizedBox(height: 16.0),
                 ElevatedButton(
                   onPressed: () async {
                     await venderMueble(context);
                   },
-                  child: Text('Vender Mueble'),
-                  style: ElevatedButton.styleFrom(backgroundColor: Colors.red),
+                  child: Text(
+                    'Vender Mueble',
+                    style: TextStyle(
+                      fontSize: 18.0,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    minimumSize: Size(double.infinity,
+                        50), // Botón ancho completo y mayor altura
+                  ),
                 ),
               ],
             ),
