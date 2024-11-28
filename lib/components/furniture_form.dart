@@ -1,13 +1,16 @@
+//lib/components/furniture_form.dart
 import 'package:flutter/material.dart';
-import 'package:toolventory_mate/components/necessary_products_field.dart';
-import '../models/furniture.dart';
-import '../controllers/furniture_controller.dart';
-import 'necessary_products_field.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:toolventory_mate/components/necessary_products_field.dart'; // Importa el campo de productos necesarios
+import '../models/furniture.dart'; // Importa el modelo de mueble
+import '../controllers/furniture_controller.dart'; // Importa el controlador de muebles
+import 'necessary_products_field.dart'; // Importa el campo de productos necesarios
+import 'package:cloud_firestore/cloud_firestore.dart'; // Importa Firestore
 
+// Widget que define el formulario de muebles
 class FurnitureForm extends StatefulWidget {
-  final Mueble? mueble;
-  final Function(Mueble) onSave;
+  final Mueble?
+      mueble; // Mueble que se está editando, puede ser null para un nuevo mueble
+  final Function(Mueble) onSave; // Callback para guardar el mueble
 
   FurnitureForm({this.mueble, required this.onSave});
 
@@ -15,21 +18,27 @@ class FurnitureForm extends StatefulWidget {
   _FurnitureFormState createState() => _FurnitureFormState();
 }
 
+// Estado del formulario de muebles
 class _FurnitureFormState extends State<FurnitureForm> {
-  final _formKey = GlobalKey<FormState>();
-  final FurnitureController _furnitureController = FurnitureController();
+  final _formKey = GlobalKey<FormState>(); // Clave del formulario
+  final FurnitureController _furnitureController =
+      FurnitureController(); // Controlador de muebles
 
+  // Controladores de texto para los campos del formulario
   late TextEditingController _nombreController;
   late TextEditingController _descripcionController;
   late TextEditingController _imagenURLController;
   late TextEditingController _stockController;
 
-  final Map<String, Map<String, dynamic>> _productosNecesarios = {};
-  final Map<String, String> _productosExistentes = {};
+  final Map<String, Map<String, dynamic>> _productosNecesarios =
+      {}; // Mapa de productos necesarios
+  final Map<String, String> _productosExistentes =
+      {}; // Mapa de productos existentes
 
   @override
   void initState() {
     super.initState();
+    // Inicializa los controladores de texto con los valores del mueble si está presente
     _nombreController =
         TextEditingController(text: widget.mueble?.nombre ?? '');
     _descripcionController =
@@ -42,9 +51,10 @@ class _FurnitureFormState extends State<FurnitureForm> {
     if (widget.mueble != null) {
       _productosNecesarios.addAll(widget.mueble!.productosNecesarios);
     }
-    _loadExistingProducts();
+    _loadExistingProducts(); // Carga los productos existentes
   }
 
+  // Carga los productos existentes desde Firestore
   Future<void> _loadExistingProducts() async {
     QuerySnapshot querySnapshot =
         await FirebaseFirestore.instance.collection('productos').get();
@@ -55,6 +65,7 @@ class _FurnitureFormState extends State<FurnitureForm> {
     });
   }
 
+  // Guarda el mueble
   Future<void> _saveMueble() async {
     if (_formKey.currentState!.validate()) {
       Mueble nuevoMueble = Mueble(
@@ -66,7 +77,8 @@ class _FurnitureFormState extends State<FurnitureForm> {
         stock: int.tryParse(_stockController.text) ?? 0,
       );
 
-      widget.onSave(nuevoMueble);
+      widget
+          .onSave(nuevoMueble); // Llama al callback onSave con el nuevo mueble
     }
   }
 

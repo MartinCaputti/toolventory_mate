@@ -1,10 +1,14 @@
 //lib/components/productos_necesarios_field.dart
+
 import 'package:flutter/material.dart';
 
+// Widget que muestra los campos de los productos necesarios para un mueble
 class ProductosNecesariosField extends StatefulWidget {
-  final Map<String, Map<String, dynamic>> productosNecesarios;
-  final Map<String, String> productosExistentes;
-  final Function(Map<String, Map<String, dynamic>>) onChanged;
+  final Map<String, Map<String, dynamic>>
+      productosNecesarios; // Mapa de productos necesarios
+  final Map<String, String> productosExistentes; // Mapa de productos existentes
+  final Function(Map<String, Map<String, dynamic>>)
+      onChanged; // Callback que se llama cuando cambian los productos necesarios
 
   ProductosNecesariosField({
     required this.productosNecesarios,
@@ -17,7 +21,9 @@ class ProductosNecesariosField extends StatefulWidget {
       _ProductosNecesariosFieldState();
 }
 
+// Estado del widget ProductosNecesariosField
 class _ProductosNecesariosFieldState extends State<ProductosNecesariosField> {
+  // Método para agregar un nuevo campo de producto necesario
   void _addProductField() {
     String idProduct = DateTime.now().toString();
     widget.productosNecesarios[idProduct] = {'nombre': '', 'cantidad': 0};
@@ -27,12 +33,14 @@ class _ProductosNecesariosFieldState extends State<ProductosNecesariosField> {
 
   @override
   Widget build(BuildContext context) {
+    // Ordenar los productos existentes alfabéticamente por nombre
     List<MapEntry<String, String>> sortedProducts =
         widget.productosExistentes.entries.toList()
           ..sort((a, b) => a.value.compareTo(b.value));
 
     return Column(
       children: [
+        // Crear un campo para cada producto necesario
         for (var entry in widget.productosNecesarios.entries)
           Padding(
             padding: const EdgeInsets.only(top: 8.0),
@@ -47,6 +55,7 @@ class _ProductosNecesariosFieldState extends State<ProductosNecesariosField> {
                     onChanged: (String? newValue) {
                       if (newValue != null) {
                         setState(() {
+                          // Actualizar el producto necesario seleccionado
                           String selectedProductId = widget
                               .productosExistentes.entries
                               .firstWhere(

@@ -1,13 +1,16 @@
 //lib/components/product_form.dart
-import 'package:flutter/material.dart';
-import '../models/product.dart';
-import '../controllers/product_controller.dart';
-import '../models/category.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 
+import 'package:flutter/material.dart';
+import '../models/product.dart'; // Importa el modelo de producto
+import '../controllers/product_controller.dart'; // Importa el controlador de productos
+import '../models/category.dart'; // Importa el modelo de categoría
+import 'package:cloud_firestore/cloud_firestore.dart'; // Importa Firestore
+
+// Widget que define el formulario de productos
 class ProductForm extends StatefulWidget {
-  final Producto? producto;
-  final Function(Producto) onSave;
+  final Producto?
+      producto; // Producto que se está editando, puede ser null para un nuevo producto
+  final Function(Producto) onSave; // Callback para guardar el producto
 
   ProductForm({this.producto, required this.onSave});
 
@@ -15,10 +18,13 @@ class ProductForm extends StatefulWidget {
   _ProductFormState createState() => _ProductFormState();
 }
 
+// Estado del formulario de productos
 class _ProductFormState extends State<ProductForm> {
-  final _formKey = GlobalKey<FormState>();
-  final ProductController _productController = ProductController();
+  final _formKey = GlobalKey<FormState>(); // Clave del formulario
+  final ProductController _productController =
+      ProductController(); // Controlador de productos
 
+  // Controladores de texto para los campos del formulario
   late TextEditingController _nombreController;
   late TextEditingController _descripcionController;
   late TextEditingController _imagenURLController;
@@ -28,6 +34,7 @@ class _ProductFormState extends State<ProductForm> {
   @override
   void initState() {
     super.initState();
+    // Inicializa los controladores de texto con los valores del producto si está presente
     _nombreController =
         TextEditingController(text: widget.producto?.nombre ?? '');
     _descripcionController =
@@ -39,6 +46,7 @@ class _ProductFormState extends State<ProductForm> {
     _selectedCategory = widget.producto?.categoria;
   }
 
+  // Guarda el producto
   Future<void> _saveProduct() async {
     if (_formKey.currentState!.validate() && _selectedCategory != null) {
       Producto nuevoProducto = Producto(
@@ -50,7 +58,8 @@ class _ProductFormState extends State<ProductForm> {
         categoria: _selectedCategory!,
       );
 
-      widget.onSave(nuevoProducto);
+      widget.onSave(
+          nuevoProducto); // Llama al callback onSave con el nuevo producto
     }
   }
 
@@ -102,6 +111,7 @@ class _ProductFormState extends State<ProductForm> {
               return null;
             },
           ),
+          // Campo desplegable para seleccionar la categoría
           StreamBuilder<QuerySnapshot>(
             stream:
                 FirebaseFirestore.instance.collection('categorias').snapshots(),
@@ -140,6 +150,7 @@ class _ProductFormState extends State<ProductForm> {
             },
           ),
           SizedBox(height: 16.0),
+          // Botón para guardar el producto
           ElevatedButton(
             onPressed: _saveProduct,
             child: Text(widget.producto == null

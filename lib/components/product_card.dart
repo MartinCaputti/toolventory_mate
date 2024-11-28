@@ -1,21 +1,23 @@
 //lib/components/product_card.dart
 
 import 'package:flutter/material.dart';
-import '../models/product.dart';
-import '../controllers/product_controller.dart';
-import 'stock_controls.dart'; // Importar el widget StockControls
-import 'product_image.dart'; // Importar el nuevo widget ProductImage
+import '../models/product.dart'; // Importa el modelo de producto
+import '../controllers/product_controller.dart'; // Importa el controlador de productos
+import 'stock_controls.dart'; // Importa el widget StockControls
+import 'product_image.dart'; // Importa el widget ProductImage
 
+// Widget que muestra una tarjeta de producto
 class ProductCard extends StatelessWidget {
-  final Producto producto;
-  final ProductController controller;
+  final Producto producto; // Producto a mostrar
+  final ProductController
+      controller; // Controlador para manejar acciones de productos
 
   ProductCard({required this.producto, required this.controller});
 
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Color.fromRGBO(247, 221, 190, 1),
+      color: Color.fromRGBO(247, 221, 190, 1), // Color de fondo de la tarjeta
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
