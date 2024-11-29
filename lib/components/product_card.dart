@@ -28,8 +28,9 @@ class ProductCard extends StatelessWidget {
               padding: EdgeInsets.all(8.0),
               child: Center(
                 child: ProductImage(
-                    imagenURL:
-                        producto.imagenURL), // Utiliza el widget ProductImage
+                  imagenURL: producto.imagenURL,
+                  size: 130,
+                ), // Utiliza el widget ProductImage
               ),
             ),
           ),

@@ -1,5 +1,4 @@
 //lib/components/list_product_view.dart
-
 import 'package:flutter/material.dart';
 import '../models/product.dart';
 import '../controllers/product_controller.dart';
@@ -47,29 +46,66 @@ class ListProductView extends StatelessWidget {
         }
 
         var producto = productos[index]; // Producto actual
-        return ListTile(
-          title: Text(producto.nombre), // Nombre del producto
-          subtitle: Text('Stock: ${producto.stock}'), // Stock del producto
-          // Navegar a la página de edición al tocar un producto
-          onTap: () async {
-            await Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => EditProductPage(producto: producto),
+        return Column(
+          children: [
+            Container(
+              decoration: BoxDecoration(
+                color: Color(0xFFF2D0A7), // Fondo del container
+                borderRadius: BorderRadius.circular(10), // Bordes redondeados
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.withOpacity(0.3), // Sombra gris
+                    spreadRadius: 1,
+                    blurRadius: 3,
+                    offset: Offset(0, 2), // Desplazamiento de la sombra
+                  ),
+                ],
               ),
-            );
-          },
-          trailing: IconButton(
-            icon: Icon(Icons.delete),
-            onPressed: producto.id != null
-                ? () async {
-                    await controller
-                        .deleteProduct(producto.id!); // Eliminar el producto
-                    onDelete(
-                        index); // Notificar al widget padre que se eliminó un producto
-                  }
-                : null,
-          ),
+              margin: const EdgeInsets.symmetric(
+                  vertical: 5,
+                  horizontal: 10), // Márgenes para separar los ítems
+              child: ListTile(
+                title: Text(
+                  producto.nombre,
+                  style: TextStyle(color: Colors.black),
+                ), // Nombre del producto
+                subtitle: Text(
+                  'Stock: ${producto.stock}',
+                  style: TextStyle(color: Colors.black),
+                ), // Stock del producto
+                // Navegar a la página de edición al tocar un producto
+                onTap: () async {
+                  await Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => EditProductPage(producto: producto),
+                    ),
+                  );
+                },
+                trailing: IconButton(
+                  icon: Icon(Icons.delete),
+                  color: Color.fromRGBO(202, 99, 99, 1),
+                  onPressed: producto.id != null
+                      ? () async {
+                          await controller.deleteProduct(
+                              producto.id!); // Eliminar el producto
+                          onDelete(
+                              index); // Notificar al widget padre que se eliminó un producto
+                        }
+                      : null,
+                ),
+              ),
+            ),
+            Container(
+              padding: const EdgeInsets.symmetric(
+                  horizontal:
+                      15.0), // Ajusta el padding para el ancho del Divider
+              child: Divider(
+                height: 1,
+                color: Colors.grey, // Color del Divider
+              ),
+            ),
+          ],
         );
       },
     );
