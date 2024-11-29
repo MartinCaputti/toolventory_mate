@@ -129,7 +129,7 @@ class MuebleDetailPage extends StatelessWidget {
             },
           ),
           IconButton(
-            icon: Icon(Icons.delete, color: Color.fromRGBO(217, 17, 34, 1)),
+            icon: Icon(Icons.delete, color: Color.fromRGBO(255, 151, 151, 1)),
             onPressed: () async {
               await borrarMueble(context);
             },
@@ -247,9 +247,8 @@ class MuebleDetailPage extends StatelessWidget {
                     ),
                   ),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.red,
-                    minimumSize: Size(double.infinity,
-                        50), // Botón ancho completo y mayor altura
+                    backgroundColor: const Color.fromARGB(249, 52, 73, 40),
+                    minimumSize: Size(double.infinity, 50),
                   ),
                 ),
               ],

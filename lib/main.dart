@@ -1,8 +1,6 @@
-//lib/main.dart
-
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart'; // Importa Firebase
-import 'views/catalog_page.dart'; //Importo las vistas
+import 'views/catalog_page.dart'; // Importo las vistas
 import 'views/category_page.dart';
 import 'views/furniture_page.dart';
 
@@ -20,12 +18,13 @@ class MyApp extends StatelessWidget {
       title: 'ToolVentory Mate', // Título de la aplicación
       // Defino el tema de la aplicación
       theme: ThemeData(
-        primaryColor:
-            const Color(0xFF734429), // Color primario para los títulos
+        primaryColor: const Color.fromRGBO(
+            125, 79, 51, 0.83), // Color primario para los títulos
         scaffoldBackgroundColor:
-            const Color(0xFFF2D0A7), // Color de fondo de la aplicación
+            Colors.transparent, // Hacemos el fondo transparente
         appBarTheme: const AppBarTheme(
-          backgroundColor: Color(0xFF734429), // Fondo del AppBar
+          backgroundColor:
+              Color.fromRGBO(125, 79, 51, 0.83), // Fondo del AppBar
           iconTheme: IconThemeData(
               color: Color.fromRGBO(
                   217, 149, 67, 1)), // Color de los iconos del AppBar
@@ -69,7 +68,7 @@ class MyApp extends StatelessWidget {
           bodyMedium:
               TextStyle(color: Color(0xFF734429)), // Color de texto secundario
           titleLarge: TextStyle(
-            color: Color(0xFF734429),
+            color: Color.fromRGBO(125, 79, 51, 0.83),
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -115,9 +114,37 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('ToolVentory Mate'), // Título del AppBar
+        backgroundColor:
+            Color.fromRGBO(125, 79, 51, 0.83), // Hacemos transparente el AppBar
+        elevation: 0, // Removemos la sombra del AppBar para unificar el color
+        flexibleSpace: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
+              colors: [
+                Color(0xFF734429), // Color inicial del degradado
+                Color.fromRGBO(
+                    125, 79, 51, 0.83), // Color final del degradado del AppBar
+              ],
+            ),
+          ),
+        ),
       ),
-      body: _widgetOptions
-          .elementAt(_selectedIndex), // Muestra la vista seleccionada
+      body: Container(
+        decoration: const BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFF734429), // Color inicial del degradado
+              Color(0xFFF2D0A7), // Color final del degradado
+            ],
+          ),
+        ),
+        child: _widgetOptions
+            .elementAt(_selectedIndex), // Muestra la vista seleccionada
+      ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
