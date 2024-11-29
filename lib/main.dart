@@ -114,22 +114,8 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('ToolVentory Mate'), // Título del AppBar
-        backgroundColor:
-            Color.fromRGBO(125, 79, 51, 0.83), // Hacemos transparente el AppBar
+        backgroundColor: const Color.fromARGB(255,123,77,49), // Mantiene el color del AppBar
         elevation: 0, // Removemos la sombra del AppBar para unificar el color
-        flexibleSpace: Container(
-          decoration: const BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [
-                Color(0xFF734429), // Color inicial del degradado
-                Color.fromRGBO(
-                    125, 79, 51, 0.83), // Color final del degradado del AppBar
-              ],
-            ),
-          ),
-        ),
       ),
       body: Container(
         decoration: const BoxDecoration(
