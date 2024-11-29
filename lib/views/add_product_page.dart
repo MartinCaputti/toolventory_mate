@@ -13,15 +13,20 @@ class AddProductPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Agregar Producto'),
+        backgroundColor:
+            const Color.fromARGB(255, 123, 77, 49), // Color del AppBar
       ),
-      body: ProductForm(
-        onSave: (producto) async {
-          await _productController.addProduct(producto);
-          Navigator.pop(context);
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Producto agregado correctamente.')),
-          );
-        },
+      body: Container(
+        color: Color(0xFFF2D0A7), // Color liso claro para el fondo
+        child: ProductForm(
+          onSave: (producto) async {
+            await _productController.addProduct(producto);
+            Navigator.pop(context);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Producto agregado correctamente.')),
+            );
+          },
+        ),
       ),
     );
   }

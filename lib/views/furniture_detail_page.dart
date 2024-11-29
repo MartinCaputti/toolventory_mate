@@ -1,3 +1,5 @@
+//lib/views/furniture_detail_page.dart
+
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import '../models/furniture.dart';
@@ -113,6 +115,8 @@ class MuebleDetailPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(mueble.nombre),
+        backgroundColor:
+            const Color.fromARGB(255, 123, 77, 49), // Color del AppBar
         actions: [
           IconButton(
             icon: Icon(
@@ -136,125 +140,129 @@ class MuebleDetailPage extends StatelessWidget {
           ),
         ],
       ),
-      body: StreamBuilder<DocumentSnapshot>(
-        stream: FirebaseFirestore.instance
-            .collection('muebles')
-            .doc(mueble.id)
-            .snapshots(),
-        builder: (context, snapshot) {
-          if (!snapshot.hasData) {
-            return Center(child: CircularProgressIndicator());
-          }
+      body: Container(
+        color: Color(0xFFF2D0A7), // Color liso claro para el fondo
+        child: StreamBuilder<DocumentSnapshot>(
+          stream: FirebaseFirestore.instance
+              .collection('muebles')
+              .doc(mueble.id)
+              .snapshots(),
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
+              return Center(child: CircularProgressIndicator());
+            }
 
-          if (!snapshot.data!.exists) {
-            return Center(child: Text('El mueble no existe.'));
-          }
+            if (!snapshot.data!.exists) {
+              return Center(child: Text('El mueble no existe.'));
+            }
 
-          Mueble muebleActualizado = Mueble.fromSnapshot(snapshot.data!);
+            Mueble muebleActualizado = Mueble.fromSnapshot(snapshot.data!);
 
-          return SingleChildScrollView(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Card(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Image.network(muebleActualizado.imagenURL),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          muebleActualizado.nombre,
-                          style: TextStyle(
-                            fontSize: 24.0,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          muebleActualizado.descripcion,
-                          style: TextStyle(fontSize: 16.0),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(8.0),
-                        child: Text(
-                          'Stock: ${muebleActualizado.stock}',
-                          style: TextStyle(fontSize: 16.0),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Divider(),
-                Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 8.0),
-                  child: Text(
-                    'Productos Necesarios:',
-                    style:
-                        TextStyle(fontSize: 18.0, fontWeight: FontWeight.bold),
-                  ),
-                ),
-                Card(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
+            return SingleChildScrollView(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Card(
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        for (var entry
-                            in muebleActualizado.productosNecesarios.entries)
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 4.0),
-                            child: Text(
-                              '${entry.value['nombre']}: ${entry.value['cantidad']}',
-                              style: TextStyle(fontSize: 16.0),
+                        Image.network(muebleActualizado.imagenURL),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            muebleActualizado.nombre,
+                            style: TextStyle(
+                              fontSize: 24.0,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            muebleActualizado.descripcion,
+                            style: TextStyle(fontSize: 16.0),
+                          ),
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.all(8.0),
+                          child: Text(
+                            'Stock: ${muebleActualizado.stock}',
+                            style: TextStyle(fontSize: 16.0),
+                          ),
+                        ),
                       ],
                     ),
                   ),
-                ),
-                SizedBox(height: 16.0),
-                ElevatedButton(
-                  onPressed: () async {
-                    await construirMueble(context);
-                  },
-                  child: Text(
-                    'Construir Mueble',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
+                  Divider(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 8.0),
+                    child: Text(
+                      'Productos Necesarios:',
+                      style: TextStyle(
+                          fontSize: 18.0, fontWeight: FontWeight.bold),
                     ),
                   ),
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: Size(double.infinity,
-                        50), // Botón ancho completo y mayor altura
-                  ),
-                ),
-                SizedBox(height: 16.0),
-                ElevatedButton(
-                  onPressed: () async {
-                    await venderMueble(context);
-                  },
-                  child: Text(
-                    'Vender Mueble',
-                    style: TextStyle(
-                      fontSize: 18.0,
-                      fontWeight: FontWeight.bold,
+                  Card(
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          for (var entry
+                              in muebleActualizado.productosNecesarios.entries)
+                            Padding(
+                              padding:
+                                  const EdgeInsets.symmetric(vertical: 4.0),
+                              child: Text(
+                                '${entry.value['nombre']}: ${entry.value['cantidad']}',
+                                style: TextStyle(fontSize: 16.0),
+                              ),
+                            ),
+                        ],
+                      ),
                     ),
                   ),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color.fromARGB(249, 52, 73, 40),
-                    minimumSize: Size(double.infinity, 50),
+                  SizedBox(height: 16.0),
+                  ElevatedButton(
+                    onPressed: () async {
+                      await construirMueble(context);
+                    },
+                    child: Text(
+                      'Construir Mueble',
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: Size(double.infinity,
+                          50), // Botón ancho completo y mayor altura
+                    ),
                   ),
-                ),
-              ],
-            ),
-          );
-        },
+                  SizedBox(height: 16.0),
+                  ElevatedButton(
+                    onPressed: () async {
+                      await venderMueble(context);
+                    },
+                    child: Text(
+                      'Vender Mueble',
+                      style: TextStyle(
+                        fontSize: 18.0,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromARGB(249, 52, 73, 40),
+                      minimumSize: Size(double.infinity, 50),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        ),
       ),
     );
   }

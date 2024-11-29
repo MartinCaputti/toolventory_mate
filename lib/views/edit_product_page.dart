@@ -16,16 +16,21 @@ class EditProductPage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Editar Producto'),
+        backgroundColor:
+            const Color.fromARGB(255, 123, 77, 49), // Color del AppBar
       ),
-      body: ProductForm(
-        producto: producto,
-        onSave: (updatedProducto) async {
-          await _productController.updateProduct(updatedProducto);
-          Navigator.pop(context);
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Producto actualizado correctamente.')),
-          );
-        },
+      body: Container(
+        color: Color(0xFFF2D0A7), // Color liso claro para el fondo
+        child: ProductForm(
+          producto: producto,
+          onSave: (updatedProducto) async {
+            await _productController.updateProduct(updatedProducto);
+            Navigator.pop(context);
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Producto actualizado correctamente.')),
+            );
+          },
+        ),
       ),
     );
   }

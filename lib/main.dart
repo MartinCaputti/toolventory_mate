@@ -1,3 +1,5 @@
+//lib/main.dart
+
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart'; // Importa Firebase
 import 'views/catalog_page.dart'; // Importo las vistas
@@ -114,7 +116,8 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('ToolVentory Mate'), // Título del AppBar
-        backgroundColor: const Color.fromARGB(255,123,77,49), // Mantiene el color del AppBar
+        backgroundColor: const Color.fromARGB(
+            255, 123, 77, 49), // Mantiene el color del AppBar
         elevation: 0, // Removemos la sombra del AppBar para unificar el color
       ),
       body: Container(
