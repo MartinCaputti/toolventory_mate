@@ -4,13 +4,20 @@ Tool inventory app by Martin Caputti
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+Funcionalidades Clave:
 
-A few resources to get you started if this is your first Flutter project:
+Gestión de Categorías y Productos
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+Adición y Edición de Productos y Muebles
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Visualización en tiempo real de cambios gracias a Firebase
+
+Interfaz intuitiva y consistente para todos los usuarios
+
+📡 Tecnologías Utilizadas:
+
+Flutter: Framework para construir interfaces de usuario nativas.
+
+Firebase: Backend en tiempo real que asegura que todos los cambios se reflejen instantáneamente.
+
+💡 Pensado para Empleados: ToolVentory Mate está diseñada pensando en los empleados que gestionan el stock, permitiendo que todos tengan acceso igualitario a todas las funcionalidades sin necesidad de iniciar sesión.
