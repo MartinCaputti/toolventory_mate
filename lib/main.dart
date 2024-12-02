@@ -1,16 +1,23 @@
 //lib/main.dart
-
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart'; // Importa Firebase
+import 'package:flutter_native_splash/flutter_native_splash.dart'; // splash screen
 import 'views/catalog_page.dart'; // Importo las vistas
 import 'views/category_page.dart';
 import 'views/furniture_page.dart';
 
 void main() async {
-  // Inicialización de Flutter y Firebase
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
+  // Inicialización de Firebase
   await Firebase.initializeApp();
+
+  // Inicia la aplicación
   runApp(MyApp());
+
+  // Remueve la splash screen después de que la aplicación haya sido inicializada
+  FlutterNativeSplash.remove();
 }
 
 class MyApp extends StatelessWidget {
